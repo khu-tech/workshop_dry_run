@@ -209,7 +209,14 @@ export class GameSystem extends System {
 							this._recordScore.sync();
 							localforage.setItem(RECORD_SCORE_KEY, this._record);
 							// Send best score to server
-							this.postPlayerRecord().then(this.getPlayerInfo());
+							this.postPlayerRecord().then(()=>{
+								// Delay for .5 second due to eventually consistent read
+								setTimeout(()=>{
+									this.getPlayerInfo();
+								}, 100);
+							});
+						} else {
+							this.getPlayerInfo();
 						}
 						global.gameState = 'lobby';
 						global.score = 0;
@@ -226,17 +233,18 @@ export class GameSystem extends System {
 			headers: {
 				'Content-Type': 'application/json'
 			}
-		}).then(response => response.text())
-			.then(data => {
-				const parsedData = JSON.parse(data);
-				this._worldRecord.text = parsedData.worldRecord;
-				this._worldRecord.sync();
-				this._ranking.text = parsedData.ranking;
-				this._ranking.sync();
-			})
-			.catch(err => {
-				console.log(err);
-			});
+		})
+		.then(response => response.text())
+		.then(data => {
+			const parsedData = JSON.parse(data);
+			this._worldRecord.text = parsedData.worldRecord;
+			this._worldRecord.sync();
+			this._ranking.text = parsedData.ranking;
+			this._ranking.sync();
+		})
+		.catch(err => {
+			console.log(err);
+		});
 	}
 
 	postPlayerRecord() {
@@ -250,14 +258,15 @@ export class GameSystem extends System {
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: body 
-		}).then(response => response.text())
-			.then(data => {
-				console.log(data);
-			})
-			.catch(err => {
-				console.log(err);
-			});
+			body: body
+		})
+		.then(response => response.text())
+		.then(data => {
+			console.log(data);
+		})
+		.catch(err => {
+			console.log(err);
+		});
 	}
 }
 
