@@ -22,7 +22,7 @@ const RING_INTERVAL = 3;
 const START_RING_SCALE = 5;
 const RECORD_SCORE_KEY = 'record-score';
 const PLAYER_ID_KEY = 'player-id';
-const API_GATEWAY_URL = 'https://796zj1c6jj.execute-api.us-east-1.amazonaws.com/dev'; //TODO: Replace XXX with API URL
+const API_GATEWAY_URL = 'https://796zj1c6jj.execute-api.us-east-1.amazonaws.com/dev/'; //TODO: Replace XXX with API URL
 
 // const session = Auth.currentSession();
 // const idToken = session.getIdToken().getJwtToken();
