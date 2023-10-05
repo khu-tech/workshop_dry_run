@@ -20,8 +20,8 @@ export class LambdaStack extends cdk.NestedStack {
 
 export class LambdaFunctionConstruct extends lambda.Function {
     constructor(scope: Construct, id: string, runTime: lambda.Runtime, codePathString: string, mainFunc: string, timeOut?: cdk.Duration, memory: number=128, storage: number=512, envs: { [key: string]: string; }={}, layers: lambda.LayerVersion[]=[]) {
-        const lambdaHandler = codePathString + mainFunc;
-        //const lambdaHandler = codePathString.split("/").at(-1) + "." + mainFunc
+        const pathArray = codePathString.split("/");
+        const lambdaHandler = pathArray[pathArray.length - 1] + "." + mainFunc
         const props = {
             runtime: runTime,
             handler: lambdaHandler,
