@@ -8,6 +8,8 @@ export async function fetchPreSignedUrl(assetKey) {
         const session = await Auth.currentSession();
         const idToken = session.getIdToken().getJwtToken();
 
+        console.log("assetkey is" + assetKey);
+
         const response = await fetch(`${API_GATEWAY_URL}?assetKey=${assetKey}`, {
           headers: {
             Authorization: idToken,
@@ -24,23 +26,54 @@ export async function fetchPreSignedUrl(assetKey) {
     }
 }
 
-export async function loadAsset(assetType, assetKey, processAsset) {
+const MAX_RETRIES = 3;
+
+export async function loadAsset(assetType, assetKey, processAsset, retryCount = 0) {
     try {
         const preSignedUrl = await fetchPreSignedUrl(assetKey);
 
-        // Utilizing LOADERS and other logic to load the asset if it is defined
-        // Assume LOADERS is a map where keys are assetTypes and values are relevant Three.js loaders
         const loader = LOADERS[assetType];
         if (!loader) {
             throw new Error(`No loader defined for asset type: ${assetType}`);
         }
 
-        loader.load(preSignedUrl, processAsset, undefined, (err) => {
+        console.log("presignedURL" + preSignedUrl);
+
+        return loader.load(preSignedUrl, processAsset, undefined, (err) => {
             console.error(`Failed to load the asset: ${assetKey}`, err);
+            if (retryCount < MAX_RETRIES) {
+                console.log(`Retrying to load asset: ${assetKey}. Attempt ${retryCount + 1}`);
+                loadAsset(assetType, assetKey, processAsset, retryCount + 1);
+            } else {
+                console.error(`Failed to load asset: ${assetKey} after ${MAX_RETRIES} attempts.`);
+            }
         });
     } catch (err) {
         console.error(`Failed to load the asset: ${assetKey}`, err.message);
+        if (retryCount < MAX_RETRIES) {
+            console.log(`Retrying to load asset: ${assetKey}. Attempt ${retryCount + 1}`);
+            loadAsset(assetType, assetKey, processAsset, retryCount + 1);
+        } else {
+            console.error(`Failed to load asset: ${assetKey} after ${MAX_RETRIES} attempts.`);
+        }
     }
 }
 
+// export async function loadAsset(assetType, assetKey, processAsset) {
+//     try {
+//         const preSignedUrl = await fetchPreSignedUrl(assetKey);
 
+//         // Utilizing LOADERS and other logic to load the asset if it is defined
+//         // Assume LOADERS is a map where keys are assetTypes and values are relevant Three.js loaders
+//         const loader = LOADERS[assetType];
+//         if (!loader) {
+//             throw new Error(`No loader defined for asset type: ${assetType}`);
+//         }
+
+//         loader.load(preSignedUrl, processAsset, undefined, (err) => {
+//             console.error(`Failed to load the asset: ${assetKey}`, err);
+//         });
+//     } catch (err) {
+//         console.error(`Failed to load the asset: ${assetKey}`, err.message);
+//     }
+// }

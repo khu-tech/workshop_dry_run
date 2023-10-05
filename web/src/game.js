@@ -4,7 +4,7 @@ import {
 	MeshBasicMaterial,
 	PlaneGeometry,
 	SRGBColorSpace,
-	//TextureLoader,
+	// TextureLoader,
 } from 'three';
 
 import { FlapSystem } from './flap';
@@ -22,14 +22,32 @@ const RING_INTERVAL = 3;
 const START_RING_SCALE = 5;
 const RECORD_SCORE_KEY = 'record-score';
 const PLAYER_ID_KEY = 'player-id';
-const API_GATEWAY_URL = 'https://XXX.execute-api.us-west-2.amazonaws.com/dev/'; // TODO: Replace XXX with API URL
+const API_GATEWAY_URL = 'https://796zj1c6jj.execute-api.us-east-1.amazonaws.com/dev'; //TODO: Replace XXX with API URL
 
-const SCORE_BOARD_TEXTURE = loadAsset('exr', "assets/scoreboard.png")
-SCORE_BOARD_TEXTURE.colorSpace = SRGBColorSpace;
+// const session = Auth.currentSession();
+// const idToken = session.getIdToken().getJwtToken();
+
+//console.log("Id token" + idToken);
+
+// const SCORE_BOARD_TEXTURE = new TextureLoader().load('https://mystaticsite-sitebucket397a1860-w1x3b6o8ccnx.s3.us-east-1.amazonaws.com/assets/scoreboard.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQ524FP4IEIVEJTIY%2F20231005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231005T162237Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=d71b95b92f82aff541997702fdf6707e1bdc3eb34cb077ea878d26ea8a794c1d', function(texture) {
+//     console.log(texture,"Texture loaded");
+//  undefined, function(error) {
+//  console.log("Error loading texture", error);
+// }});
+
+// let SCORE_BOARD_TEXTURE = loadAsset('exr', 'assets/scoreboard.png');
+
+// SCORE_BOARD_TEXTURE.then(texture => {
+//     texture.colorSpace = SRGBColorSpace;
+// }).catch(error => {
+//     console.error("Error loading the asset:", error);
+// });
 
 export class GameSystem extends System {
+
 	constructor() {
 		super();
+		this.SCORE_BOARD_TEXTURE;
 		this.globalEntity = this.query(
 			(q) => q.current.with(GlobalComponent).write,
 		);
@@ -78,16 +96,31 @@ export class GameSystem extends System {
 		});
 	}
 
+	async prepare() {
+        try {
+            this.SCORE_BOARD_TEXTURE = await loadAsset('exr', 'assets/scoreboard.png');
+			if (!this.SCORE_BOARD_TEXTURE){
+				console.error("Assets was not loaded correctly");
+				return;
+			}
+			console.log("score board" + this.SCORE_BOARD_TEXTURE);
+            this.SCORE_BOARD_TEXTURE.colorSpace = SRGBColorSpace;
+        } catch (error) {
+            console.error("Error loading the asset:", error);
+        }
+    }
+
 	execute() {
 		const global = this.globalEntity.current[0].write(GlobalComponent);
 		const player = this.playerEntity.current[0].read(PlayerComponent);
 		const isPresenting = global.renderer.xr.isPresenting;
+		console.log("is presenting" + isPresenting);
 		const rotator = player.space.parent;
 
 		if (!this._scoreBoard) {
 			this._scoreBoard = new Mesh(
 				new PlaneGeometry(2, 1),
-				new MeshBasicMaterial({ map: SCORE_BOARD_TEXTURE, transparent: true }),
+				new MeshBasicMaterial({ map: this.SCORE_BOARD_TEXTURE, transparent: true }),
 			);
 			player.space.add(this._scoreBoard);
 			this._scoreBoard.position.set(0, 1.5, -2);
@@ -209,7 +242,14 @@ export class GameSystem extends System {
 							this._recordScore.sync();
 							localforage.setItem(RECORD_SCORE_KEY, this._record);
 							// Send best score to server
-							this.postPlayerRecord().then(this.getPlayerInfo());
+							this.postPlayerRecord().then(()=>{
+								// Delay for .5 second due to eventually consistent read
+								setTimeout(()=>{
+									this.getPlayerInfo();
+								}, 100);
+							});
+						} else {
+							this.getPlayerInfo();
 						}
 						global.gameState = 'lobby';
 						global.score = 0;
@@ -223,20 +263,22 @@ export class GameSystem extends System {
 	getPlayerInfo() {
 		return fetch(`${API_GATEWAY_URL}leaderboard/${this._playerId}`, {
 			method: 'GET',
+			mode: 'no-cors',
 			headers: {
 				'Content-Type': 'application/json'
 			}
-		}).then(response => response.text())
-			.then(data => {
-				const parsedData = JSON.parse(data);
-				this._worldRecord.text = parsedData.worldRecord;
-				this._worldRecord.sync();
-				this._ranking.text = parsedData.ranking;
-				this._ranking.sync();
-			})
-			.catch(err => {
-				console.log(err);
-			});
+		})
+		.then(response => response.text())
+		.then(data => {
+			const parsedData = JSON.parse(data);
+			this._worldRecord.text = parsedData.worldRecord;
+			this._worldRecord.sync();
+			this._ranking.text = parsedData.ranking;
+			this._ranking.sync();
+		})
+		.catch(err => {
+			console.log(err);
+		});
 	}
 
 	postPlayerRecord() {
@@ -247,17 +289,19 @@ export class GameSystem extends System {
 		console.log(body);
 		return fetch(`${API_GATEWAY_URL}leaderboard`, {
 			method: 'POST',
+			mode: 'no-cors',
 			headers: {
 				'Content-Type': 'application/json'
 			},
-			body: body 
-		}).then(response => response.text())
-			.then(data => {
-				console.log(data);
-			})
-			.catch(err => {
-				console.log(err);
-			});
+			body: body
+		})
+		.then(response => response.text())
+		.then(data => {
+			console.log(data);
+		})
+		.catch(err => {
+			console.log(err);
+		});
 	}
 }
 

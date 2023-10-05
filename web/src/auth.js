@@ -34,7 +34,7 @@ const handleSignIn = async () => {
         const user = await Auth.signIn(username, password);
         console.log('Sign in success!', user);
         // Ensuring the session is established before fetching it and redirecting.
-        // await new Promise(resolve => setTimeout(resolve, 1000));  // wait for a second
+        await new Promise(resolve => setTimeout(resolve, 1000));  // wait for a second
         const session = await Auth.currentSession();
         console.log("session is", session);
     

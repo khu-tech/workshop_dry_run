@@ -30,24 +30,6 @@ export class Main {
   constructor(scope: cdk.Stack, contextValues: any) {
     //Make S3 Bucket
     const storageBucket = new S3Bucket(scope, "StorageBucket", cdk.RemovalPolicy.DESTROY);
-    //Make Static Site S3 Bucket and CloudFront Distribution
-    const siteBucket = new S3Bucket(scope, 'SiteBucket', cdk.RemovalPolicy.DESTROY);
-    // Additional configurations based on the first snippet...
-
-    const cloudfrontOAI = new cloudfront.OriginAccessIdentity(scope, 'cloudfront-OAI', {
-      comment: `OAI for site`
-    });
-
-    const distribution = new cloudfront.Distribution(scope, 'SiteDistribution', {
-      defaultRootObject: "index.html",
-      minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
-      defaultBehavior: {
-        origin: new cloudfront_origins.S3Origin(siteBucket, {originAccessIdentity: cloudfrontOAI}),
-        compress: true,
-        allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
-        viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
-      }
-    });
 
     //DynamoDB Database
     const storageDatabase = new DDBTable(scope, "StorageDatabase", "bucket", "key", BillingMode.PAY_PER_REQUEST, cdk.RemovalPolicy.DESTROY);

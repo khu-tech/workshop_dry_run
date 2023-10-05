@@ -18,7 +18,8 @@ import { InlineSystem } from './landing';
 import { World } from '@lastolivegames/becsy';
 import { setupScene } from './scene';
 
-Amplify.configure(amplifyConfig);
+Amplify.configure(amplifyConfig); 
+
 const worldDef = {
 	defs: [
 		GlobalComponent,
