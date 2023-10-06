@@ -13,6 +13,9 @@ const amplifyConfig = {
 
     // OPTIONAL - Enforce user authentication prior to accessing AWS resources or not
     mandatorySignIn: true,
+  },
+  Api: {
+    url: 'https://796zj1c6jj.execute-api.us-east-1.amazonaws.com/dev'
   }
 };
 

@@ -1,7 +1,8 @@
 import { Auth } from 'aws-amplify';
 import { LOADERS } from './loaders';
+import amplifyConfig from './amplifyconfigure';
 
-const API_GATEWAY_URL = 'https://796zj1c6jj.execute-api.us-east-1.amazonaws.com/dev';
+const API_GATEWAY_URL = amplifyConfig.Api.url;
 
 export async function fetchPreSignedUrl(assetKey) {
     try {

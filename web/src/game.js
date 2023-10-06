@@ -15,6 +15,7 @@ import { Text } from 'troika-three-text';
 import { generateUUID } from 'three/src/math/MathUtils';
 import localforage from 'localforage';
 import { loadAsset } from './fetchurl';
+import amplifyconfig from './amplifyconfigure';
 
 const NUM_FLAPS_TO_START_GAME = 3;
 const START_ANGULAR_SPEED = Math.PI / 25;
@@ -22,14 +23,14 @@ const RING_INTERVAL = 3;
 const START_RING_SCALE = 5;
 const RECORD_SCORE_KEY = 'record-score';
 const PLAYER_ID_KEY = 'player-id';
-const API_GATEWAY_URL = 'https://796zj1c6jj.execute-api.us-east-1.amazonaws.com/dev/'; //TODO: Replace XXX with API URL
+const API_GATEWAY_URL = amplifyconfig.Api.url;
 
 // const session = Auth.currentSession();
 // const idToken = session.getIdToken().getJwtToken();
 
 //console.log("Id token" + idToken);
 
-// const SCORE_BOARD_TEXTURE = new TextureLoader().load('https://mystaticsite-sitebucket397a1860-w1x3b6o8ccnx.s3.us-east-1.amazonaws.com/assets/scoreboard.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAQ524FP4IEIVEJTIY%2F20231005%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20231005T162237Z&X-Amz-Expires=900&X-Amz-SignedHeaders=host&X-Amz-Signature=d71b95b92f82aff541997702fdf6707e1bdc3eb34cb077ea878d26ea8a794c1d', function(texture) {
+// const SCORE_BOARD_TEXTURE = new TextureLoader().load('XXX', function(texture) {
 //     console.log(texture,"Texture loaded");
 //  undefined, function(error) {
 //  console.log("Error loading texture", error);
@@ -261,7 +262,7 @@ export class GameSystem extends System {
 	}
 
 	getPlayerInfo() {
-		return fetch(`${API_GATEWAY_URL}leaderboard/${this._playerId}`, {
+		return fetch(`${API_GATEWAY_URL}/leaderboard/${this._playerId}`, {
 			method: 'GET',
 			mode: 'no-cors',
 			headers: {
@@ -287,7 +288,7 @@ export class GameSystem extends System {
 			score: this._record
 		});
 		console.log(body);
-		return fetch(`${API_GATEWAY_URL}leaderboard`, {
+		return fetch(`${API_GATEWAY_URL}/leaderboard`, {
 			method: 'POST',
 			mode: 'no-cors',
 			headers: {
