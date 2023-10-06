@@ -15,6 +15,7 @@ import { Text } from 'troika-three-text';
 import { generateUUID } from 'three/src/math/MathUtils';
 import localforage from 'localforage';
 import { loadAsset } from './fetchurl';
+import { Auth } from 'aws-amplify';
 import amplifyconfig from './amplifyconfigure';
 
 const NUM_FLAPS_TO_START_GAME = 3;
@@ -49,6 +50,7 @@ export class GameSystem extends System {
 	constructor() {
 		super();
 		this.SCORE_BOARD_TEXTURE;
+		this.ID_TOKEN;
 		this.globalEntity = this.query(
 			(q) => q.current.with(GlobalComponent).write,
 		);
@@ -99,6 +101,9 @@ export class GameSystem extends System {
 
 	async prepare() {
         try {
+			const session = await Auth.currentSession();
+			this.ID_TOKEN = session.getIdToken().getJwtToken();
+
             this.SCORE_BOARD_TEXTURE = await loadAsset('exr', 'assets/scoreboard.png');
 			if (!this.SCORE_BOARD_TEXTURE){
 				console.error("Assets was not loaded correctly");
@@ -264,9 +269,9 @@ export class GameSystem extends System {
 	getPlayerInfo() {
 		return fetch(`${API_GATEWAY_URL}/leaderboard/${this._playerId}`, {
 			method: 'GET',
-			mode: 'no-cors',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${this.ID_TOKEN}`
 			}
 		})
 		.then(response => response.text())
@@ -290,9 +295,9 @@ export class GameSystem extends System {
 		console.log(body);
 		return fetch(`${API_GATEWAY_URL}/leaderboard`, {
 			method: 'POST',
-			mode: 'no-cors',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				Authorization: `Bearer ${this.ID_TOKEN}`
 			},
 			body: body
 		})
