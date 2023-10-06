@@ -26,17 +26,8 @@ export class restGateway extends apig.RestApi {
             deployOptions: {
                 stageName: stageName ? stageName : 'dev',
             },
-            defaultCorsPreflightOptions: {
-                allowHeaders: [
-                    'X-Amz-Date',
-                    'Origin',
-                    'Content-Type', 'X-Amz-Date', 'Authorization', 'X-Api-Key', 'X-Amz-Security-Token'
-                ],
-                allowMethods: ['OPTIONS', 'GET', 'POST'],
-                allowCredentials: true,
-                allowOrigins: ['*'],
-            },
-        }
+        };
+
         super(scope, id, props)
         this.scope = scope;
         this.id = id;
@@ -44,6 +35,35 @@ export class restGateway extends apig.RestApi {
         this.stageName = stageName;
         helpers.OutputVariable(scope, 'API Rest URL', this.url, "Restful API Gateway URL");
     }
+
+    addCorsOptions(resource: apig.Resource) {
+        resource.addMethod('OPTIONS', new apig.MockIntegration({
+            integrationResponses: [{
+                statusCode: '200',
+                responseParameters: {
+                    'method.response.header.Access-Control-Allow-Headers': "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,AuthToken'",
+                    'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,GET,PUT,POST,DELETE'",
+                    'method.response.header.Access-Control-Allow-Credentials': "'false'",
+                    'method.response.header.Access-Control-Allow-Origin': "'*'",
+                },
+            }],
+            passthroughBehavior: apig.PassthroughBehavior.NEVER,
+            requestTemplates: {
+                "application/json": "{\"statusCode\": 200}"
+            },
+        }), {
+            methodResponses: [{
+                statusCode: '200',
+                responseParameters: {
+                    'method.response.header.Access-Control-Allow-Headers': true,
+                    'method.response.header.Access-Control-Allow-Methods': true,
+                    'method.response.header.Access-Control-Allow-Credentials': true,
+                    'method.response.header.Access-Control-Allow-Origin': true,
+                },
+            }]
+        });
+    }
+
     GetAPIGatewayArn() {
         // return `arn:aws:execute-api:${this.env.region}:${this.env.account}:${this.restApiId}/dev`
         return `arn:aws:apigateway:${this.env.region}::/restapis/${this.restApiId}/stages/${this.stageName}`
@@ -91,6 +111,7 @@ export class restGateway extends apig.RestApi {
                 }
             }
         }
+        this.addCorsOptions(currentResource);
         return currentResource;
     }
 
