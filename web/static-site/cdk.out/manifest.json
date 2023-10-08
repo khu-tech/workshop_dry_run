@@ -18,7 +18,7 @@
         "validateOnSynth": false,
         "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-deploy-role-${AWS::AccountId}-${AWS::Region}",
         "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-cfn-exec-role-${AWS::AccountId}-${AWS::Region}",
-        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/655b6831e4a4208e4efe30171ad7fc316fe9bed5389784cf07727bef160b9175.json",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/a7c7c6aa1df40d2d5d265be83f741d9f19d8aeeeb523dafc1f4d2305688bb027.json",
         "requiresBootstrapStackVersion": 6,
         "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
         "additionalDependencies": [
@@ -34,60 +34,6 @@
         "MyStaticSite.assets"
       ],
       "metadata": {
-        "/MyStaticSite/cloudfront-OAI/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "cloudfrontOAID153E53B"
-          }
-        ],
-        "/MyStaticSite/SiteBucket/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SiteBucket397A1860"
-          }
-        ],
-        "/MyStaticSite/SiteBucket/Policy/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SiteBucketPolicy3AC1D0F8"
-          }
-        ],
-        "/MyStaticSite/SiteBucket/AutoDeleteObjectsCustomResource/Default": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SiteBucketAutoDeleteObjectsCustomResource9585E968"
-          }
-        ],
-        "/MyStaticSite/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-          }
-        ],
-        "/MyStaticSite/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
-          }
-        ],
-        "/MyStaticSite/Bucket": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "Bucket"
-          }
-        ],
-        "/MyStaticSite/SiteDistribution/Resource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "SiteDistribution3FF9535D"
-          }
-        ],
-        "/MyStaticSite/DistributionId": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "DistributionId"
-          }
-        ],
         "/MyStaticSite/DeployWithInvalidation/AwsCliLayer/Resource": [
           {
             "type": "aws:cdk:logicalId",

@@ -8,6 +8,7 @@ export declare class LambdaStack extends cdk.NestedStack {
         [key: string]: string;
     }, layers?: lambda.LayerVersion[]);
     MethodIntegration(): cdk.aws_apigateway.LambdaIntegration;
+    getLambdaFunction(): lambda.IFunction;
 }
 export declare class LambdaFunctionConstruct extends lambda.Function {
     constructor(scope: Construct, id: string, runTime: lambda.Runtime, codePathString: string, mainFunc: string, timeOut?: cdk.Duration, memory?: number, storage?: number, envs?: {

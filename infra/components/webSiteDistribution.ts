@@ -6,23 +6,26 @@ import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as cloudfrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
 import * as helpers from './helperScripts';
 import { S3Bucket } from './s3';
-import path = require('path');
+import * as path from 'path';
 import { restGateway } from './apigateway';
+import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
+
 export class WebSiteDeployment extends cdk.NestedStack {
   deploymentBucket: cdk.aws_s3.Bucket;
   // originalAccessIdentity: cloudfront.OriginAccessIdentity;
   cloudfrontDistribution: cloudfront.Distribution;
   apiUrl: string;
   region: string;
-  constructor(scope: Construct, id: string, folderPath: string, rootObject: string = 'index.html', apiGateway: restGateway) {
+  constructor(scope: Construct, id: string, folderPath: string, rootObject: string = 'index.html', apiGateway: restGateway, s3Bucket: S3Bucket) {
     super(scope, id);
-    this.deploymentBucket = new S3Bucket(scope, id + "_Bucket", cdk.RemovalPolicy.DESTROY, true);
-    const bucketDeployment = new BucketDeployment(scope, id + "_DeploymentBucket", {
-      sources: [Source.asset(path.join(__dirname, folderPath))],
-      destinationBucket: this.deploymentBucket
+    const assetPath = path.join(__dirname, folderPath);
+    new BucketDeployment(scope, id + "_DeploymentBucket", {
+      sources: [s3deploy.Source.asset(assetPath)],
+      destinationBucket: s3Bucket
     });
     this.apiUrl = apiGateway.url;
     const originalAccessIdentity = new cloudfront.OriginAccessIdentity(this, id + "_OAI");
+    this.deploymentBucket = s3Bucket;
     this.deploymentBucket.grantRead(originalAccessIdentity);
     const s3Origin = new cloudfrontOrigins.S3Origin(this.deploymentBucket, {
       originAccessIdentity: originalAccessIdentity
@@ -84,16 +87,16 @@ export class WebSiteDeployment extends cdk.NestedStack {
         contentTypeOptions: {
           override: true,
         },
-        contentSecurityPolicy: {
-          contentSecurityPolicy:
-            `default-src 'none'; style-src 'self' 'unsafe-inline'; `
-            + `connect-src 'self' https://cognito-idp.${this.region}.amazonaws.com/ https://cognito-identity.${this.region}.amazonaws.com https://${this.apiUrl}; `
-            + `script-src 'self' https://cognito-idp.${this.region}.amazonaws.com/ https://cognito-identity.${this.region}.amazonaws.com https://${this.apiUrl}; `
-            + `object-src 'none'; `
-            + `frame-ancestors 'none'; font-src 'self'; `
-            + `manifest-src 'self'`,
-          override: true,
-        }
+        // contentSecurityPolicy: {
+        //   contentSecurityPolicy:
+        //     `default-src 'none'; style-src 'self' 'unsafe-inline'; `
+        //     + `connect-src 'self' https://cognito-idp.${this.region}.amazonaws.com/ https://cognito-identity.${this.region}.amazonaws.com https://${this.apiUrl}; `
+        //     + `script-src 'self' https://cognito-idp.${this.region}.amazonaws.com/ https://cognito-identity.${this.region}.amazonaws.com https://${this.apiUrl}; `
+        //     + `object-src 'none'; `
+        //     + `frame-ancestors 'none'; font-src 'self'; `
+        //     + `manifest-src 'self'`,
+        //   override: true,
+        // }
       },
     });
     return responseHeadersPolicy;

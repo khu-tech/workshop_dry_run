@@ -11,7 +11,6 @@ export declare class CognitoStack extends cdk.NestedStack {
     CreateUserPool(scope: Construct, id: string, props?: cognito.UserPoolProps): cdk.aws_cognito.UserPool;
     CreateUserPoolClient(id: string, userPool: cognito.UserPool, supportedProviders: cognito.UserPoolClientIdentityProvider[], userPasswordBool: boolean, userSrpBool: boolean): cdk.aws_cognito.UserPoolClient;
     CreateIdentityPool(scope: Construct, id: string, allowUnAuthUsers?: boolean, cognitoUserPool?: cognito.UserPool, cognitoUserPoolClient?: cognito.UserPoolClient, samlArns?: string[], openIdArns?: string[]): cdk.aws_cognito.CfnIdentityPool;
-    AddUser(scope: Construct, id: string, ParameterName: string, UserPoolID: string): string;
     GenerateDefaultRoles(scope: Construct, id: string, identityPool: cognito.CfnIdentityPool): cdk.aws_iam.Role;
     ExportConfig(): {
         Auth: {

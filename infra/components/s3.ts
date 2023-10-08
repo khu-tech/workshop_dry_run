@@ -4,8 +4,10 @@ import { Construct } from 'constructs';
 import { RemovalPolicy } from 'aws-cdk-lib';
 import { Bucket } from 'aws-cdk-lib/aws-s3';
 import * as iam from 'aws-cdk-lib/aws-iam'
+import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
+
 export class S3Bucket extends Bucket{
-    constructor(scope: Construct, id: string,removalPolicy?:RemovalPolicy,addTLSPolicy:boolean=false) {
+    constructor(scope: Construct, id: string, removalPolicy?:RemovalPolicy,addTLSPolicy:boolean=false) {
         const props={
             blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
             encryption: s3.BucketEncryption.S3_MANAGED,
@@ -29,6 +31,8 @@ export class S3Bucket extends Bucket{
         if(addTLSPolicy){
             this.requireTLSAddToResourcePolicy();
         }
+        
+        // Deployment of local folder
     }
     ExportConfig(){
         return {

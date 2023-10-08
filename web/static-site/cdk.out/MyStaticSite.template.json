@@ -1,267 +1,5 @@
 {
  "Resources": {
-  "cloudfrontOAID153E53B": {
-   "Type": "AWS::CloudFront::CloudFrontOriginAccessIdentity",
-   "Properties": {
-    "CloudFrontOriginAccessIdentityConfig": {
-     "Comment": "OAI for MyStaticSite"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "MyStaticSite/cloudfront-OAI/Resource"
-   }
-  },
-  "SiteBucket397A1860": {
-   "Type": "AWS::S3::Bucket",
-   "Properties": {
-    "PublicAccessBlockConfiguration": {
-     "BlockPublicAcls": true,
-     "BlockPublicPolicy": true,
-     "IgnorePublicAcls": true,
-     "RestrictPublicBuckets": true
-    },
-    "Tags": [
-     {
-      "Key": "aws-cdk:auto-delete-objects",
-      "Value": "true"
-     },
-     {
-      "Key": "aws-cdk:cr-owned:8c74941a",
-      "Value": "true"
-     }
-    ]
-   },
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete",
-   "Metadata": {
-    "aws:cdk:path": "MyStaticSite/SiteBucket/Resource"
-   }
-  },
-  "SiteBucketPolicy3AC1D0F8": {
-   "Type": "AWS::S3::BucketPolicy",
-   "Properties": {
-    "Bucket": {
-     "Ref": "SiteBucket397A1860"
-    },
-    "PolicyDocument": {
-     "Statement": [
-      {
-       "Action": [
-        "s3:GetBucket*",
-        "s3:List*",
-        "s3:DeleteObject*"
-       ],
-       "Effect": "Allow",
-       "Principal": {
-        "AWS": {
-         "Fn::GetAtt": [
-          "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-          "Arn"
-         ]
-        }
-       },
-       "Resource": [
-        {
-         "Fn::GetAtt": [
-          "SiteBucket397A1860",
-          "Arn"
-         ]
-        },
-        {
-         "Fn::Join": [
-          "",
-          [
-           {
-            "Fn::GetAtt": [
-             "SiteBucket397A1860",
-             "Arn"
-            ]
-           },
-           "/*"
-          ]
-         ]
-        }
-       ]
-      },
-      {
-       "Action": "s3:GetObject",
-       "Effect": "Allow",
-       "Principal": {
-        "CanonicalUser": {
-         "Fn::GetAtt": [
-          "cloudfrontOAID153E53B",
-          "S3CanonicalUserId"
-         ]
-        }
-       },
-       "Resource": {
-        "Fn::Join": [
-         "",
-         [
-          {
-           "Fn::GetAtt": [
-            "SiteBucket397A1860",
-            "Arn"
-           ]
-          },
-          "/*"
-         ]
-        ]
-       }
-      }
-     ],
-     "Version": "2012-10-17"
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "MyStaticSite/SiteBucket/Policy/Resource"
-   }
-  },
-  "SiteBucketAutoDeleteObjectsCustomResource9585E968": {
-   "Type": "Custom::S3AutoDeleteObjects",
-   "Properties": {
-    "ServiceToken": {
-     "Fn::GetAtt": [
-      "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-      "Arn"
-     ]
-    },
-    "BucketName": {
-     "Ref": "SiteBucket397A1860"
-    }
-   },
-   "DependsOn": [
-    "SiteBucketPolicy3AC1D0F8"
-   ],
-   "UpdateReplacePolicy": "Delete",
-   "DeletionPolicy": "Delete",
-   "Metadata": {
-    "aws:cdk:path": "MyStaticSite/SiteBucket/AutoDeleteObjectsCustomResource/Default"
-   }
-  },
-  "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": {
-   "Type": "AWS::IAM::Role",
-   "Properties": {
-    "AssumeRolePolicyDocument": {
-     "Version": "2012-10-17",
-     "Statement": [
-      {
-       "Action": "sts:AssumeRole",
-       "Effect": "Allow",
-       "Principal": {
-        "Service": "lambda.amazonaws.com"
-       }
-      }
-     ]
-    },
-    "ManagedPolicyArns": [
-     {
-      "Fn::Sub": "arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-     }
-    ]
-   },
-   "Metadata": {
-    "aws:cdk:path": "MyStaticSite/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role"
-   }
-  },
-  "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": {
-   "Type": "AWS::Lambda::Function",
-   "Properties": {
-    "Code": {
-     "S3Bucket": {
-      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}"
-     },
-     "S3Key": "5194f926380567b6fdffc61629afdad2afc818614cb227df45e499c69db163a7.zip"
-    },
-    "Timeout": 900,
-    "MemorySize": 128,
-    "Handler": "index.handler",
-    "Role": {
-     "Fn::GetAtt": [
-      "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-      "Arn"
-     ]
-    },
-    "Runtime": "nodejs18.x",
-    "Description": {
-     "Fn::Join": [
-      "",
-      [
-       "Lambda function for auto-deleting objects in ",
-       {
-        "Ref": "SiteBucket397A1860"
-       },
-       " S3 bucket."
-      ]
-     ]
-    }
-   },
-   "DependsOn": [
-    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
-   ],
-   "Metadata": {
-    "aws:cdk:path": "MyStaticSite/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler",
-    "aws:asset:path": "asset.5194f926380567b6fdffc61629afdad2afc818614cb227df45e499c69db163a7",
-    "aws:asset:property": "Code"
-   }
-  },
-  "SiteDistribution3FF9535D": {
-   "Type": "AWS::CloudFront::Distribution",
-   "Properties": {
-    "DistributionConfig": {
-     "CustomErrorResponses": [
-      {
-       "ErrorCachingMinTTL": 1800,
-       "ErrorCode": 403,
-       "ResponseCode": 403,
-       "ResponsePagePath": "/error.html"
-      }
-     ],
-     "DefaultCacheBehavior": {
-      "AllowedMethods": [
-       "GET",
-       "HEAD",
-       "OPTIONS"
-      ],
-      "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6",
-      "Compress": true,
-      "TargetOriginId": "MyStaticSiteSiteDistributionOrigin1206161CC",
-      "ViewerProtocolPolicy": "redirect-to-https"
-     },
-     "DefaultRootObject": "index.html",
-     "Enabled": true,
-     "HttpVersion": "http2",
-     "IPV6Enabled": true,
-     "Origins": [
-      {
-       "DomainName": {
-        "Fn::GetAtt": [
-         "SiteBucket397A1860",
-         "RegionalDomainName"
-        ]
-       },
-       "Id": "MyStaticSiteSiteDistributionOrigin1206161CC",
-       "S3OriginConfig": {
-        "OriginAccessIdentity": {
-         "Fn::Join": [
-          "",
-          [
-           "origin-access-identity/cloudfront/",
-           {
-            "Ref": "cloudfrontOAID153E53B"
-           }
-          ]
-         ]
-        }
-       }
-      }
-     ]
-    }
-   },
-   "Metadata": {
-    "aws:cdk:path": "MyStaticSite/SiteDistribution/Resource"
-   }
-  },
   "DeployWithInvalidationAwsCliLayerDEDD5787": {
    "Type": "AWS::Lambda::LayerVersion",
    "Properties": {
@@ -295,18 +33,10 @@
      }
     ],
     "SourceObjectKeys": [
-     "1536f1db0419b8d952ebdf40aa99043f8d69567a42ef18d96cad15ead168322c.zip"
+     "e1710128d9d2b3fc730a0e006431b997ef24346f0b95f7a056e143f9bae14d6c.zip"
     ],
-    "DestinationBucketName": {
-     "Ref": "SiteBucket397A1860"
-    },
-    "Prune": true,
-    "DistributionId": {
-     "Ref": "SiteDistribution3FF9535D"
-    },
-    "DistributionPaths": [
-     "/*"
-    ]
+    "DestinationBucketName": "mainstack-storagebucket19db2ff8-hdoge9e7rg6a",
+    "Prune": true
    },
    "UpdateReplacePolicy": "Delete",
    "DeletionPolicy": "Delete",
@@ -410,34 +140,30 @@
        "Effect": "Allow",
        "Resource": [
         {
-         "Fn::GetAtt": [
-          "SiteBucket397A1860",
-          "Arn"
+         "Fn::Join": [
+          "",
+          [
+           "arn:",
+           {
+            "Ref": "AWS::Partition"
+           },
+           ":s3:::mainstack-storagebucket19db2ff8-hdoge9e7rg6a"
+          ]
          ]
         },
         {
          "Fn::Join": [
           "",
           [
+           "arn:",
            {
-            "Fn::GetAtt": [
-             "SiteBucket397A1860",
-             "Arn"
-            ]
+            "Ref": "AWS::Partition"
            },
-           "/*"
+           ":s3:::mainstack-storagebucket19db2ff8-hdoge9e7rg6a/*"
           ]
          ]
         }
        ]
-      },
-      {
-       "Action": [
-        "cloudfront:GetInvalidation",
-        "cloudfront:CreateInvalidation"
-       ],
-       "Effect": "Allow",
-       "Resource": "*"
       }
      ],
      "Version": "2012-10-17"
@@ -496,24 +222,12 @@
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/21R0WoCMRD8lr7HtLalpY/niVAoKAp9PXLJKqu5RLKJcoT79yYXqxb6NLOzk+yw+8w/3vnTgzjTRKrDRGPL48YLeWBJaqLUNqits8bzuHS4Q1NJCUSfCoxH37N6a+rsWWTPv445knfYBo/WZPt9PTB64XEW5AF87l1YgZXVKPubfKlLMRME+XUTFRy17bs0jZfW/CowQQSeeJVhYFp0rRI8ph+/RA/uGxzlUBs0Ow3emkUwcox5Jcn6yweGouNxbTVkecRbxMKGgdWBvO3WQDY4WZxX/qe1cvaEChwb06Wdp9Xtsn8Z/DH4S9pG56RNOobUyKsz1RrH8Ox+RG2NwhLSWAV8T4+n6SufvqXT7glx4kI6Rgd8XfAHoXV3SvYBAAA="
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/02QzW7CMBCEn6V3ZymlouoRgnrqoQoS18jYW7TEP1XWBkVW3r120qCeZvx55Zn1C7y/wfOTvHOldFcZOkM6Bqk6kVGbeAP7qDoMe8koeNMmjT/GDxZd+Ls5PICQzBgYdkVGYaQ9awmp/nafcsD+hD2Td+JI7mIwePcRnQqFPEweXfwoSFpIjTdY8KRf3pAaynF24xLSmhLQ5srKEOzuXBuaMsXUJS90yaGijhy8bZB97NX87OL/w9o7TXMH5zXClVe39Sust/mjrkxU9dEFsgjNrL80rX81RAEAAA=="
    },
    "Metadata": {
     "aws:cdk:path": "MyStaticSite/CDKMetadata/Default"
    },
    "Condition": "CDKMetadataAvailable"
-  }
- },
- "Outputs": {
-  "Bucket": {
-   "Value": {
-    "Ref": "SiteBucket397A1860"
-   }
-  },
-  "DistributionId": {
-   "Value": {
-    "Ref": "SiteDistribution3FF9535D"
-   }
   }
  },
  "Conditions": {

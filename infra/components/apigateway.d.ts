@@ -17,6 +17,7 @@ export declare class restGateway extends apig.RestApi {
     };
     stageName: string;
     constructor(scope: Construct, id: string, description?: string, stageName?: string);
+    addCorsOptions(resource: apig.Resource): void;
     GetAPIGatewayArn(): string;
     AddCognitoAuthorizer(scope: Construct, id: string, UserPools: cognito.UserPool[]): cdk.aws_apigateway.CognitoUserPoolsAuthorizer;
     AddAPIGAuthorizer(scope: Construct, id: string, authFn: lambda.Function): cdk.aws_apigateway.RequestAuthorizer;

@@ -1,14 +1,19 @@
 import * as cdk from 'aws-cdk-lib';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as helpers from './helperScripts';
 import { Construct } from 'constructs';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as iam from 'aws-cdk-lib/aws-iam';
+import { LambdaStack } from './lambda';
+
 export class CognitoStack extends cdk.NestedStack {
     id: string;
     identityPool: cognito.CfnIdentityPool;
     userPool: cognito.UserPool;
     userPoolClient: cognito.UserPoolClient;
     authRole: cdk.aws_iam.Role;
-    constructor(scope: Construct, id: string, userPasswordAuth: boolean, userSRPAuth: boolean, cognitoIdentityProviders?: cognito.UserPoolClientIdentityProvider[], samlProviders?: string[], openIdProviders?: string[]) {
+    constructor(scope: Construct, id: string, userPasswordAuth: boolean, userSRPAuth: boolean, cognitoIdentityProviders?: cognito.UserPoolClientIdentityProvider[], samlProviders?: string[], openIdProviders?: string[], ) {
         super(scope, id);
         this.id = id;
         this.userPool = this.CreateUserPool(scope, id)
@@ -17,11 +22,37 @@ export class CognitoStack extends cdk.NestedStack {
         this.identityPool.samlProviderArns = samlProviders;
         this.identityPool.openIdConnectProviderArns = openIdProviders;
         this.authRole = this.GenerateDefaultRoles(scope, id, this.identityPool);
+        //const postConfirmationLambda = this.createPreSignupLambda();
+        //this.userPool.addTrigger(cognito.UserPoolOperation.PRE_SIGN_UP, postConfirmationLambda);
     }
 
-    CreateUserPool(scope: Construct, id: string, props?: cognito.UserPoolProps) {
-        const userPool = new cognito.UserPool(scope, id + "_UserPool", props)
-        return userPool
+     CreateUserPool(scope: Construct, id: string, props?: cognito.UserPoolProps) {
+        const preSignupLambda = new LambdaStack(scope, "preSignupLambda", cdk.aws_lambda.Runtime.NODEJS_18_X, '../lambdaScripts/preSignup', 'handler', cdk.Duration.minutes(5), 512, 512);
+        const preSignupFunction = preSignupLambda.getLambdaFunction();
+        console.log("lambda function is" + preSignupFunction);
+        const userPool = new cognito.UserPool(scope, id + "_UserPool_test", {
+            selfSignUpEnabled: true,
+            signInAliases: {
+                username: true,
+                email: true,
+            },
+            autoVerify: {
+                email: false,
+                phone: false
+            },
+            lambdaTriggers: {
+                preSignUp: preSignupFunction
+            },
+            // standardAttributes: {
+            //     email: {
+            //         required: false,
+            //         mutable: true,
+            //     }
+            // },
+            //Allowing users to recover their account via SMS without MFA and using email 
+            ...props
+        });
+        return userPool;
     }
 
     CreateUserPoolClient(id: string, userPool: cognito.UserPool, supportedProviders: cognito.UserPoolClientIdentityProvider[], userPasswordBool: boolean, userSrpBool: boolean) {
@@ -44,19 +75,7 @@ export class CognitoStack extends cdk.NestedStack {
         })
         return identityPool;
     }
-    AddUser(scope: Construct, id: string, ParameterName: string, UserPoolID: string) {
-        const userEmail = helpers.cfnParamString(scope, ParameterName);
-        const user = new cognito.CfnUserPoolUser(scope, id, {
-            username: userEmail.valueAsString,
-            userPoolId: UserPoolID,
-            desiredDeliveryMediums: ['EMAIL'],
-            userAttributes: [{
-                name: 'email',
-                value: userEmail.valueAsString
-            }]
-        });
-        return userEmail.valueAsString
-    }
+
     GenerateDefaultRoles(scope: Construct, id: string, identityPool: cognito.CfnIdentityPool) {
         const unauthenticatedRole = new cdk.aws_iam.Role(scope, id + '_CognitoDefaultUnauthenticatedRole', {
             assumedBy: new cdk.aws_iam.FederatedPrincipal('cognito-identity.amazonaws.com', {
@@ -96,6 +115,7 @@ export class CognitoStack extends cdk.NestedStack {
         });
         return authenticatedRole;
     }
+
     ExportConfig() {
         return {
             Auth: {

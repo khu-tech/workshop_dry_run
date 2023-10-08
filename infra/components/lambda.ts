@@ -3,9 +3,11 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import * as helpers from './helperScripts';
 import * as apig from 'aws-cdk-lib/aws-apigateway';
 import * as cr from 'aws-cdk-lib/custom-resources';
+import * as iam from 'aws-cdk-lib/aws-iam';
 import path = require('path');
 import { Construct } from 'constructs';
 import { S3Bucket } from './s3';
+import {CognitoStack} from "./cognito";
 
 export class LambdaStack extends cdk.NestedStack {
     lambdaFunction:lambda.Function
@@ -15,6 +17,9 @@ export class LambdaStack extends cdk.NestedStack {
     }
     MethodIntegration(){
         return new apig.LambdaIntegration(this.lambdaFunction,{proxy:true});
+    }
+    public getLambdaFunction(): lambda.IFunction {
+        return this.lambdaFunction;
     }
 }
 
@@ -34,6 +39,7 @@ export class LambdaFunctionConstruct extends lambda.Function {
         }
         super(scope,id,props);
     }
+
     MethodIntegration(){
         return new apig.LambdaIntegration(this, { proxy: true })   
     }
