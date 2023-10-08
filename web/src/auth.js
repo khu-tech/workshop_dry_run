@@ -5,6 +5,9 @@ import './styles/auth.css';
 // Configure Amplify
 Amplify.configure(amplifyConfig);
 
+// Get message div
+const messageDiv = document.getElementById('message'); 
+
 const handleSignUp = async () => {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -20,9 +23,12 @@ const handleSignUp = async () => {
         });
         console.log('Sign up success!', user);
         // Handle successful sign-up logic here
+        // Displaying success message 
+        showMessage('Sign up successful! Please use the same username and password to sign in', 'success');
     } catch (error) {
         console.error('Error signing up:', error);
         // Handle errors or show messages to user
+        showMessage('Error signing up: ' + error.message, 'error');
     }
 };
 
@@ -42,6 +48,15 @@ const handleSignIn = async () => {
     } catch (error) {
         console.error('Error signing in:', error);
     }
+};
+
+const showMessage = (message, type) => {
+    messageDiv.innerText = message;
+    messageDiv.className = type;  // 'success' or 'error'
+    messageDiv.style.display = 'block'; // Ensure it's visible
+    setTimeout(() => {  // Hide after 3 seconds
+        messageDiv.style.display = 'none';
+    }, 3000);
 };
 
 // Attach event listeners
