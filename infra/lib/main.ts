@@ -28,7 +28,6 @@ export class Main {
     //Make S3 Bucket
     const storageBucket = new S3Bucket(scope, "StorageBucket", cdk.RemovalPolicy.DESTROY);
     //DynamoDB Database
-    const storageDatabase = new DDBTable(scope, "StorageDatabase", "bucket", "key", BillingMode.PAY_PER_REQUEST, cdk.RemovalPolicy.DESTROY);
     const leaderboardDatabase = new DDBTable(scope, "LeaderboardDatabase", "playerId", undefined, BillingMode.PAY_PER_REQUEST, cdk.RemovalPolicy.DESTROY);
     
     // Add Global Secondary Index to Leaderboard Database for Ranking queries
@@ -46,8 +45,7 @@ export class Main {
 
     //Lambda layer
     const storageEnvs = {
-      BUCKET_NAME: storageBucket.bucketName,
-      TABLE_NAME: storageDatabase.tableName
+      BUCKET_NAME: storageBucket.bucketName
     };
 
     const highScoreEnvs = {
@@ -65,7 +63,6 @@ export class Main {
     storageBucket.grantReadWrite(getAssetLambda.lambdaFunction);
 
     //Grant Lambda functions read/write access to DDB table
-    storageDatabase.grantReadWriteData(getAssetLambda.lambdaFunction);
     leaderboardDatabase.grantReadData(getHighScoreLambda.lambdaFunction);
     leaderboardDatabase.grantReadWriteData(putHighScoreLambda.lambdaFunction);
 
