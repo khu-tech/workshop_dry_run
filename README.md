@@ -100,15 +100,18 @@ First asset:
 
 2.2 go to flap.js and comment out 
 
+```javascript
 `import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';`
-
+```
 and uncomment
 
+```javascript
 `import { loadAsset } from './fetchurl';`
+```
 
 2.3 comment out
 
-```
+```javascript
 new GLTFLoader().load('assets/wing.glb', (gltf) => {
 			const rightWing = gltf.scene;
 		 	const leftWing = rightWing.clone(true);
@@ -120,7 +123,7 @@ new GLTFLoader().load('assets/wing.glb', (gltf) => {
 ```
 and uncomment 
 
-```
+```javascript
 loadAsset('gltf', 'assets/wing.glb', (gltf) => {
 			const rightWing = gltf.scene;
 			const leftWing = rightWing.clone(true);
