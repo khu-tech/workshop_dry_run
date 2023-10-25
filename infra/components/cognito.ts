@@ -40,16 +40,11 @@ export class CognitoStack extends cdk.NestedStack {
                 email: false,
                 phone: false
             },
+            /** Uncomm these lines of code to create a pre-signUp trigger after user sign-up
             lambdaTriggers: {
                 preSignUp: preSignupFunction
             },
-            // standardAttributes: {
-            //     email: {
-            //         required: false,
-            //         mutable: true,
-            //     }
-            // },
-            //Allowing users to recover their account via SMS without MFA and using email 
+            */
             ...props
         });
         return userPool;

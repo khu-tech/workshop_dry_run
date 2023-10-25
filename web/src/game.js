@@ -101,9 +101,12 @@ export class GameSystem extends System {
 
 	async prepare() {
         try {
+			/** Uncomment this code for workshop step 2.4, 
+			 * this will give you the JwtToken from the Amplify auth function that you just created 
+			 * 
 			const session = await Auth.currentSession();
 			this.ID_TOKEN = session.getIdToken().getJwtToken();
-
+            */
             this.SCORE_BOARD_TEXTURE = await loadAsset('exr', 'assets/scoreboard.png');
 			if (!this.SCORE_BOARD_TEXTURE){
 				console.error("Assets was not loaded correctly");
@@ -266,6 +269,7 @@ export class GameSystem extends System {
 		}
 	}
 
+	/** Uncomment these lines of code for workshop 2.5, after which this API will require a JwT token from request header 
 	getPlayerInfo() {
 		return fetch(`${API_GATEWAY_URL}/leaderboard/${this._playerId}`, {
 			method: 'GET',
@@ -274,6 +278,7 @@ export class GameSystem extends System {
 				Authorization: `Bearer ${this.ID_TOKEN}`
 			}
 		})
+	*/
 		.then(response => response.text())
 		.then(data => {
 			const parsedData = JSON.parse(data);

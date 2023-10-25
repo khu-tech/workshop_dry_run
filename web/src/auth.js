@@ -13,6 +13,7 @@ const handleSignUp = async () => {
     const password = document.getElementById('password').value;
     const email = document.getElementById('email').value; // If using email
 
+    /** uncomment this code for workshop step 2.2 
     try {
         const { user } = await Auth.signUp({
             username,
@@ -32,10 +33,13 @@ const handleSignUp = async () => {
     }
 };
 
+*/ 
+
 const handleSignIn = async () => {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
+    /** Uncomment these lines of code for workshop step 2.2 
     try {
         const user = await Auth.signIn(username, password);
         console.log('Sign in success!', user);
@@ -49,7 +53,7 @@ const handleSignIn = async () => {
         console.error('Error signing in:', error);
     }
 };
-
+*/
 const showMessage = (message, type) => {
     messageDiv.innerText = message;
     messageDiv.className = type;  // 'success' or 'error'
