@@ -115,15 +115,11 @@ export class restGateway extends apig.RestApi {
         return currentResource;
     }
 
-    AddMethodIntegration(integration: apig.AwsIntegration, route: string = "", methodString: string, auth: apig.Authorizer) {
+    AddMethodIntegration(integration: apig.AwsIntegration, route: string = "", methodString: string) {
         const resource = this.AddResource(route);
         const method = resource.addMethod(
             methodString,
-            integration,
-            {
-                authorizer: auth,
-                authorizationType: auth.authorizationType
-            })
+            integration,)
         return true;
     }
     AttachWebACL(scope: Construct, id: string) {

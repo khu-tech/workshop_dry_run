@@ -15,9 +15,8 @@ import {
 	sRGBEncoding,
 } from 'three';
 
-//import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
-//import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
-import {loadAsset} from './fetchurl';
+import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export const setupScene = () => {
 	const scene = new Scene();
@@ -45,25 +44,15 @@ export const setupScene = () => {
 	const pmremGenerator = new PMREMGenerator(renderer);
 	pmremGenerator.compileEquirectangularShader();
 
-	// new EXRLoader().load('assets/venice_sunset_1k.exr', (texture) => {
-	// 	const envMap = pmremGenerator.fromEquirectangular(texture).texture;
-	// 	pmremGenerator.dispose();
-	// 	scene.environment = envMap;
-	// });
-	loadAsset('exr', 'assets/venice_sunset_1k.exr', (texture) => {
+	new EXRLoader().load('assets/venice_sunset_1k.exr', (texture) => {
 		const envMap = pmremGenerator.fromEquirectangular(texture).texture;
 		pmremGenerator.dispose();
 		scene.environment = envMap;
-	})
+	});
 
-
-	loadAsset('gltf','assets/flappybird.glb', (gltf) => {
+	new GLTFLoader().load('assets/flappybird.glb', (gltf) => {
 		scene.add(gltf.scene);
-	})
-
-	//new GLTFLoader().load('assets/flappybird.glb', (gltf) => {
-	//scene.add(gltf.scene);
-	//});
+	});
 
 	window.addEventListener('resize', function () {
 		camera.aspect = window.innerWidth / window.innerHeight;

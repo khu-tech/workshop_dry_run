@@ -6,9 +6,6 @@
  */
 
 import './styles/index.css';
-import {Amplify} from 'aws-amplify';
-import amplifyConfig from './amplifyconfigure';
-
 import { PlayerComponent, PlayerSystem } from './player';
 
 import { FlapSystem } from './flap';
@@ -17,8 +14,6 @@ import { GlobalComponent } from './global';
 import { InlineSystem } from './landing';
 import { World } from '@lastolivegames/becsy';
 import { setupScene } from './scene';
-
-Amplify.configure(amplifyConfig); 
 
 const worldDef = {
 	defs: [

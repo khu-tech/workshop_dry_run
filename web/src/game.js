@@ -4,7 +4,7 @@ import {
 	MeshBasicMaterial,
 	PlaneGeometry,
 	SRGBColorSpace,
-	// TextureLoader,
+	TextureLoader,
 } from 'three';
 
 import { FlapSystem } from './flap';
@@ -14,8 +14,6 @@ import { System } from '@lastolivegames/becsy';
 import { Text } from 'troika-three-text';
 import { generateUUID } from 'three/src/math/MathUtils';
 import localforage from 'localforage';
-import { loadAsset } from './fetchurl';
-import { Auth } from 'aws-amplify';
 import amplifyconfig from './amplifyconfigure';
 
 const NUM_FLAPS_TO_START_GAME = 3;
@@ -24,33 +22,14 @@ const RING_INTERVAL = 3;
 const START_RING_SCALE = 5;
 const RECORD_SCORE_KEY = 'record-score';
 const PLAYER_ID_KEY = 'player-id';
-const API_GATEWAY_URL = amplifyconfig.Api.url;
+const API_GATEWAY_URL = amplifyconfig.Api.url;; // TODO: Replace XXX with API URL
 
-// const session = Auth.currentSession();
-// const idToken = session.getIdToken().getJwtToken();
-
-//console.log("Id token" + idToken);
-
-// const SCORE_BOARD_TEXTURE = new TextureLoader().load('XXX', function(texture) {
-//     console.log(texture,"Texture loaded");
-//  undefined, function(error) {
-//  console.log("Error loading texture", error);
-// }});
-
-// let SCORE_BOARD_TEXTURE = loadAsset('exr', 'assets/scoreboard.png');
-
-// SCORE_BOARD_TEXTURE.then(texture => {
-//     texture.colorSpace = SRGBColorSpace;
-// }).catch(error => {
-//     console.error("Error loading the asset:", error);
-// });
+const SCORE_BOARD_TEXTURE = new TextureLoader().load('assets/scoreboard.png');
+SCORE_BOARD_TEXTURE.colorSpace = SRGBColorSpace;
 
 export class GameSystem extends System {
-
 	constructor() {
 		super();
-		this.SCORE_BOARD_TEXTURE;
-		this.ID_TOKEN;
 		this.globalEntity = this.query(
 			(q) => q.current.with(GlobalComponent).write,
 		);
@@ -99,34 +78,16 @@ export class GameSystem extends System {
 		});
 	}
 
-	async prepare() {
-        try {
-			const session = await Auth.currentSession();
-			this.ID_TOKEN = session.getIdToken().getJwtToken();
-
-            this.SCORE_BOARD_TEXTURE = await loadAsset('exr', 'assets/scoreboard.png');
-			if (!this.SCORE_BOARD_TEXTURE){
-				console.error("Assets was not loaded correctly");
-				return;
-			}
-			console.log("score board" + this.SCORE_BOARD_TEXTURE);
-            this.SCORE_BOARD_TEXTURE.colorSpace = SRGBColorSpace;
-        } catch (error) {
-            console.error("Error loading the asset:", error);
-        }
-    }
-
 	execute() {
 		const global = this.globalEntity.current[0].write(GlobalComponent);
 		const player = this.playerEntity.current[0].read(PlayerComponent);
 		const isPresenting = global.renderer.xr.isPresenting;
-		console.log("is presenting" + isPresenting);
 		const rotator = player.space.parent;
 
 		if (!this._scoreBoard) {
 			this._scoreBoard = new Mesh(
 				new PlaneGeometry(2, 1),
-				new MeshBasicMaterial({ map: this.SCORE_BOARD_TEXTURE, transparent: true }),
+				new MeshBasicMaterial({ map: SCORE_BOARD_TEXTURE, transparent: true }),
 			);
 			player.space.add(this._scoreBoard);
 			this._scoreBoard.position.set(0, 1.5, -2);
@@ -267,11 +228,10 @@ export class GameSystem extends System {
 	}
 
 	getPlayerInfo() {
-		return fetch(`${API_GATEWAY_URL}/leaderboard/${this._playerId}`, {
+		return fetch(`${API_GATEWAY_URL}leaderboard/${this._playerId}`, {
 			method: 'GET',
 			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${this.ID_TOKEN}`
+				'Content-Type': 'application/json'
 			}
 		})
 		.then(response => response.text())
@@ -293,11 +253,10 @@ export class GameSystem extends System {
 			score: this._record
 		});
 		console.log(body);
-		return fetch(`${API_GATEWAY_URL}/leaderboard`, {
+		return fetch(`${API_GATEWAY_URL}leaderboard`, {
 			method: 'POST',
 			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `Bearer ${this.ID_TOKEN}`
+				'Content-Type': 'application/json'
 			},
 			body: body
 		})

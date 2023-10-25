@@ -79,6 +79,7 @@ const getWorldRecordAndRanking = async (playerId) => {
     }
 }
 
+/** Uncomment this function for workshop step 3.2 
 export const handler = async (event, context) => {
     try {
         const playerId = event.pathParameters.playerId.toLowerCase();
@@ -99,6 +100,7 @@ export const handler = async (event, context) => {
         return JsonResponse(500, "Error getting player info.");
     }
 }
+*/
 
 const JsonResponse = (statusCode, body, mime = 'application/json') => {
     let response = {};

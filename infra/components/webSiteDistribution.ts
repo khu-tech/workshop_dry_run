@@ -4,7 +4,6 @@ import { Construct } from 'constructs';
 import * as wafv2 from 'aws-cdk-lib/aws-wafv2';
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as cloudfrontOrigins from "aws-cdk-lib/aws-cloudfront-origins";
-import * as helpers from './helperScripts';
 import { S3Bucket } from './s3';
 import * as path from 'path';
 import { restGateway } from './apigateway';
@@ -59,7 +58,6 @@ export class WebSiteDeployment extends cdk.NestedStack {
       defaultRootObject: filePath,
       webAclId: webACL.attrArn,
       minimumProtocolVersion: cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021, // Required by security
-
     }
     )
   }

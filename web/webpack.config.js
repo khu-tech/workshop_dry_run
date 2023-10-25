@@ -9,8 +9,7 @@ module.exports = {
 	},
 	mode: 'development',
 	entry: {
-		auth: './src/auth.js',
-		main: './src/index.js'
+		index: './src/index.js',
 	},
 	module: {
 		rules: [
@@ -37,14 +36,7 @@ module.exports = {
 	plugins: [
 		new ESLintPlugin(),
 		new HtmlWebpackPlugin({
-			template: './src/auth.html',
-			filename: 'index.html',
-			chunks: ['auth']
-		}),
-		new HtmlWebpackPlugin({
-            template: './src/index.html',
-			filename: 'main.html',
-			chunks: ['main']
+			template: './src/index.html',
 		}),
 		new CopyPlugin({
 			patterns: [{ from: 'src/assets', to: 'assets' }],
