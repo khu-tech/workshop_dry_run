@@ -1,4 +1,4 @@
-#Workshop Part One:
+# Workshop Part One:
 Welcome to the step-by-step guide to building your game backend using AWS services like API Gateway, Lambda, and DynamoDB. Follow the steps below to set up the backend infrastructure efficiently.
 
 ## Prerequisites
