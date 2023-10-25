@@ -27,4 +27,4 @@ npm install -g aws-cdk
 ```
 
 # Jump to workshop one:
-### select workshop_step_one from this repository's branches, and check out the code of this branch. 
+Select workshop_step_one from this repository's branches, and check out the code of this branch. 
