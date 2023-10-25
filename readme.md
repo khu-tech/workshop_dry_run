@@ -119,7 +119,7 @@ this.ID_TOKEN = session.getIdToken().getJwtToken();
 
 2.5 The previou step will give you the token you need to authenticate API Gateway call, once you have this token, go to the same game.js file and uncomment: 
 
-```
+```javascript
 getPlayerInfo() {
 		return fetch(`${API_GATEWAY_URL}/leaderboard/${this._playerId}`, {
 			method: 'GET',
