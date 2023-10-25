@@ -1,10 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
-import * as helpers from './helperScripts';
 import { Construct } from 'constructs';
-import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
-import * as iam from 'aws-cdk-lib/aws-iam';
 import { LambdaStack } from './lambda';
 
 export class CognitoStack extends cdk.NestedStack {
@@ -22,8 +18,6 @@ export class CognitoStack extends cdk.NestedStack {
         this.identityPool.samlProviderArns = samlProviders;
         this.identityPool.openIdConnectProviderArns = openIdProviders;
         this.authRole = this.GenerateDefaultRoles(scope, id, this.identityPool);
-        //const postConfirmationLambda = this.createPreSignupLambda();
-        //this.userPool.addTrigger(cognito.UserPoolOperation.PRE_SIGN_UP, postConfirmationLambda);
     }
 
      CreateUserPool(scope: Construct, id: string, props?: cognito.UserPoolProps) {
@@ -43,13 +37,6 @@ export class CognitoStack extends cdk.NestedStack {
             lambdaTriggers: {
                 preSignUp: preSignupFunction
             },
-            // standardAttributes: {
-            //     email: {
-            //         required: false,
-            //         mutable: true,
-            //     }
-            // },
-            //Allowing users to recover their account via SMS without MFA and using email 
             ...props
         });
         return userPool;
