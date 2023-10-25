@@ -10,10 +10,10 @@ In this portion of the workshop, we'll dive into the implementation of user sign
 - Understanding how AWS Amplify streamlines the authentication process by offering dedicated libraries.
 Components:
 
-__AWS Amplify SDK__: A tool that offers a simplified experience for user registration and sign-in.
-__AWS Cognito__: Utilized within the Amplify SDK to handle user authentication and token generation.
+__AWS Amplify SDK__: A tool that offers a simplified experience for user registration and sign-in. <br> 
+__AWS Cognito__: Utilized within the Amplify SDK to handle user authentication and token generation. <br>
 
-** Files and UI Elements**:
+__Files and UI Elements__:
 The main logic behind our authentication experience is encapsulated within the auth.js file. Additionally, be prepared to engage with some essential UI components, which will be presented in HTML and CSS formats.
 
 Make sure to checkout branch workshop_step_two from this github repository. 
