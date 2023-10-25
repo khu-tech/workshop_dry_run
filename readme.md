@@ -47,6 +47,9 @@ lambdaTriggers: {
 This enables the Cognito user pool to trigger a Lambda function after user enter the sign up information. You can have your own custom logic here for example like MFA, but in this workshop we just auto approve the signup. 
 
 ### Step Two: 
+
+run ```cdk deploy ``` and update this Auth file below with the relevant output from your command line tool. 
+
 ```
 Auth: {
     // REQUIRED - Amazon Cognito Identity Pool ID
