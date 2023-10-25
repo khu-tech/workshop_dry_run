@@ -1,4 +1,4 @@
-# Workshop Part Two: Implementing Secure User Sign-in
+# Workshop Part Two: Implementing Secure User Sign-in, Authentication and Autherization 
 
 ## Overview:
 In this portion of the workshop, we'll dive into the implementation of user sign-in and authentication for securing your API calls. Ensuring authentication is not merely a best practice, but a critical component of a robust security strategy. Without it, your API is exposed, making it vulnerable to threats like DDoS attacks.
