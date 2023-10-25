@@ -6,11 +6,7 @@ import { DDBTable } from '../components/ddb';
 import { CognitoStack } from '../components/cognito';
 import { restGatewayNestedStack } from '../components/apigateway';
 import * as ddb from 'aws-cdk-lib/aws-dynamodb';
-import { Construct } from 'constructs';
 import { BillingMode } from 'aws-cdk-lib/aws-dynamodb';
-import * as cloudfront_origins from 'aws-cdk-lib/aws-cloudfront-origins';
-import { CfnOutput, Duration, RemovalPolicy, Stack } from 'aws-cdk-lib';
-import * as s3deploy from 'aws-cdk-lib/aws-s3-deployment';
 import { WebSiteDeployment } from '../components/webSiteDistribution';
 
 export class MainStack extends cdk.Stack {
@@ -87,7 +83,7 @@ export class Main {
     // const apiURL = website.AddDistributionBehavior('/apis/*', new cdk.aws_cloudfront_origins.RestApiOrigin(apiGateway, {}));
     // apiGateway.apiGatewayURL = website.cloudfrontDistribution.distributionDomainName + "/apis"
      const configJson = {
-    //   ...storageBucket.ExportConfig(),
+         ...storageBucket.ExportConfig(),
     //   ...apiGateway.ExportConfig(),
          ...cognitoStack.ExportConfig()
     }
