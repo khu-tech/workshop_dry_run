@@ -24,5 +24,7 @@ Install the AWS CDK CLI by
 
 ```
 npm install -g aws-cdk
+```
 
-# Go to workshop one: select workshop_step_one from this repository's branches, and check out the code of this branch. 
+# Jump to workshop one:
+### select workshop_step_one from this repository's branches, and check out the code of this branch. 
