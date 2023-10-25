@@ -1,22 +1,24 @@
-Workshop Two: Implementing Secure User Sign-in
-Overview:
+# Workshop Part Two: Implementing Secure User Sign-in
+
+## Overview:
 In this portion of the workshop, we'll dive into the implementation of user sign-in and authentication for securing your API calls. Ensuring authentication is not merely a best practice, but a critical component of a robust security strategy. Without it, your API is exposed, making it vulnerable to threats like DDoS attacks.
 
-What You'll Learn:
+## What You'll Learn:
 
-How to use the AWS Amplify SDK to simplify user registration and sign-in.
-How to configure AWS Cognito within the Amplify SDK to generate authentication tokens.
-Understanding how AWS Amplify streamlines the authentication process by offering dedicated libraries.
+- How to use the AWS Amplify SDK to simplify user registration and sign-in.
+- How to configure AWS Cognito within the Amplify SDK to generate authentication tokens.
+- Understanding how AWS Amplify streamlines the authentication process by offering dedicated libraries.
 Components:
 
-AWS Amplify SDK: A tool that offers a simplified experience for user registration and sign-in.
-AWS Cognito: Utilized within the Amplify SDK to handle user authentication and token generation.
-Files and UI Elements:
+** AWS Amplify SDK ** : A tool that offers a simplified experience for user registration and sign-in.
+** AWS Cognito ** : Utilized within the Amplify SDK to handle user authentication and token generation.
+
+** Files and UI Elements**:
 The main logic behind our authentication experience is encapsulated within the auth.js file. Additionally, be prepared to engage with some essential UI components, which will be presented in HTML and CSS formats.
 
-checkout the repo from github link -- 
+Make sure to checkout branch workshop_step_two from this github repository. 
 
-Step One: 
+### Step One: 
 Let's run the cdk deploy and then copy paste the output value of Cogino and replace the values under the amplifyconfigure.js 
 
 1. Make these changes before deploy 
@@ -25,7 +27,9 @@ Uncomment these three lines:
 
 ```
 const apiAuthorizer = apiGateway.AddCognitoAuthorizer(scope, "API_Authorizer", [cognitoStack.userPool])
+
 apiGateway.AddMethodIntegration(putHighScoreLambda.MethodIntegration(), "leaderboard", "POST", apiAuthorizer);
+
 apiGateway.AddMethodIntegration(getHighScoreLambda.MethodIntegration(), "leaderboard/{playerId}", "GET", apiAuthorizer);
 
 ```
@@ -42,7 +46,7 @@ lambdaTriggers: {
 
 This enables the Cognito user pool to trigger a Lambda function after user enter the sign up information. You can have your own custom logic here for example like MFA, but in this workshop we just auto approve the signup. 
 
-Step Two: 
+### Step Two: 
 ```
 Auth: {
     // REQUIRED - Amazon Cognito Identity Pool ID
@@ -96,6 +100,7 @@ try {
     }
 
 ```
+
 Doing this will enable you to create the both the sign up and sign in page and have it connect to the to the Coginito user pool. 
 
 After you got the auth information through sign in, you could use it by calling auth.token everywhere without having to worry about the constructing the object. 
