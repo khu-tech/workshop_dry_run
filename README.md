@@ -1,3 +1,11 @@
+# Welcome to the AWS XR workshop, in this workshop you will learn about 
+
+
+
+
+
+# AWS CDK 
+
 # Prerequisite:
 
 CDK setup: if you haven't had AWS CLI and AWS CDK set up, make sure you install aws cli first. 
@@ -17,4 +25,6 @@ aws configure
 Install the AWS CDK CLI by 
 
 ```
-npm install -g aws-cdk 
+npm install -g aws-cdk
+
+# Go to workshop one: select workshop_step_one from branch, and check out the code of this branch. 
