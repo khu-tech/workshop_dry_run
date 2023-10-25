@@ -1,6 +1,8 @@
 # Welcome to the AWS WebXR workshop
 In this workshop, you will discover how to leverage a suite of AWS services to create a robust backend for your WebXR application. You'll learn how to host your app and make it publicly accessible via a URL, as well as how to efficiently render your assets from the cloud.
 
+![Diagram Image](https://github.com/khu-tech/workshop_dry_run/blob/main/webXR%20diagram%20with%20AWS.drawio%20(1).png)
+
 # AWS CDK 
 In this workshop, we're utilizing the power of AWS Cloud Development Kit (AWS CDK) to streamline the setup of our backend services. AWS CDK provides a high-level, programmatic approach to defining cloud resources, allowing us to create complex infrastructure setups with just a few lines of code. With AWS CDK, we'll be able to rapidly provision and manage the services that form the backbone of our WebXR application, including hosting and asset rendering, all directly within the workshop environment. Experience firsthand the efficiency and flexibility that AWS CDK brings to cloud development.
 
