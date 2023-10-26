@@ -132,7 +132,8 @@ Wait for the deployment to finish and take note of the API Gateway endpoint URL 
 Utilize cURL to test the POST API endpoint. Ensure to replace the endpoint URL and payload as per your requirements.
 
 ```
-curl -X POST \ https://ejkjxfylk3.execute-api.us-east-1.amazonaws.com/dev/leaderboard \ -H "Content-Type: application/json" \ -d '{"playerId": "PlayerId123", "score": "123"}'
+curl -X POST https://mc15bipyy2.execute-api.us-east-1.amazonaws.com/dev/leaderboard  -H "Content-Type: application/json" -d '{"playerId": "PlayerId123", "score": "123"}' 
+"High score stored.
 
 ```
 Upon successful execution, you should observe a success message: "High Score stored." Validate the data insertion by navigating to the DynamoDB table via the AWS Console.
