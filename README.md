@@ -106,7 +106,7 @@ and uncomment
 
 comment out
 
-```
+```javascript
 new GLTFLoader().load('assets/wing.glb', (gltf) => {
 			const rightWing = gltf.scene;
 		 	const leftWing = rightWing.clone(true);
@@ -118,7 +118,7 @@ new GLTFLoader().load('assets/wing.glb', (gltf) => {
 ```
 and uncomment 
 
-```
+```javascript
 loadAsset('gltf', 'assets/wing.glb', (gltf) => {
 			const rightWing = gltf.scene;
 			const leftWing = rightWing.clone(true);

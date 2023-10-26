@@ -29,6 +29,8 @@ export async function fetchPreSignedUrl(assetKey) {
 
 const MAX_RETRIES = 3;
 
+/** Uncomment these line of code, workshop step 2.1, to create custom load asset function 
+ * that loads asset from S3
 export async function loadAsset(assetType, assetKey, processAsset, retryCount = 0) {
     try {
         const preSignedUrl = await fetchPreSignedUrl(assetKey);
@@ -60,21 +62,4 @@ export async function loadAsset(assetType, assetKey, processAsset, retryCount = 
     }
 }
 
-// export async function loadAsset(assetType, assetKey, processAsset) {
-//     try {
-//         const preSignedUrl = await fetchPreSignedUrl(assetKey);
 
-//         // Utilizing LOADERS and other logic to load the asset if it is defined
-//         // Assume LOADERS is a map where keys are assetTypes and values are relevant Three.js loaders
-//         const loader = LOADERS[assetType];
-//         if (!loader) {
-//             throw new Error(`No loader defined for asset type: ${assetType}`);
-//         }
-
-//         loader.load(preSignedUrl, processAsset, undefined, (err) => {
-//             console.error(`Failed to load the asset: ${assetKey}`, err);
-//         });
-//     } catch (err) {
-//         console.error(`Failed to load the asset: ${assetKey}`, err.message);
-//     }
-// }
