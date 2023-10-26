@@ -1,30 +1,32 @@
-Here comes part 3 of our workshop, rendering your 3D assets from Cloud. 
+# Workshop Part Three: rendering your 3D assets from Cloud
 
-In the previous parts of the workshop, you might notice that the assets is managed locally, and this part of workshop we will teach you how to render assets from S3 using S3 pre-signed URL. But why? 
+In the previous parts of the workshop, you might notice that the assets is managed locally, and this part of workshop we will teach you how to render assets from S3 using S3 pre-signed URL, and why we are using S3? 
 
-Supercharged Scalability: Amazon S3 is like the trusty steed of cloud storage. Whether it's a handful of users or a whole carnival, S3 delivers without a hiccup. Local hosting, while charming, might stumble a bit with a big crowd.
+__Supercharged Scalability__: Amazon S3 is like the trusty steed of cloud storage. Whether it's a handful of users or a whole carnival, S3 delivers without a hiccup. Local hosting, while charming, might stumble a bit with a big crowd.
 
-Secured Access: Think of pre-signed URLs as special passes. They make sure our assets stay exclusive, keeping them away from prying eyes.
+__Secured Access__: Think of pre-signed URLs as special passes. They make sure our assets stay exclusive, keeping them away from prying eyes.
 
-Safety First: With S3's stellar backup and redundancy, our assets are tucked in safe and sound. It's like having a digital safety net!
+__Safety First__: With S3's stellar backup and redundancy, our assets are tucked in safe and sound. It's like having a digital safety net!
 
-Swift and Smooth: WebXR apps can be chunky, and we want you diving into the action, not waiting. By hosting on S3, we cut down those yawn-worthy load times.
+__Swift and Smooth__: WebXR apps can be chunky, and we want you diving into the action, not waiting. By hosting on S3, we cut down those yawn-worthy load times.
 
 Always Updated: Keeping things fresh is easier with S3. We can spruce up our assets, ensuring you always get the best and brightest without endless app updates.
 
 
-Step one: 
-Go to infra/lib/main.ts, and uncomment this code 
-```
+## Step one: 
+
+1.1 Go to infra/lib/main.ts, and uncomment this code 
+```javascript
 const getAssetLambda = new LambdaStack(scope, "getAssetLambda", cdk.aws_lambda.Runtime.NODEJS_18_X, '../lambdaScripts/getAsset', 'handler', cdk.Duration.minutes(5), 512, 512, storageEnvs);
 
 ```
-Also uncomment 
-```
+1.2 Also uncomment 
+
+```javascript
 apiGateway.AddMethodIntegration(getAssetLambda.MethodIntegration(), "assets", "GET", apiAuthorizer);
 
 ```
-And then go to lambdaScript and uncomment 
+1.3 And then go to lambdaScript and uncomment 
 
 ```javascript 
 export const handler = async (event) => {
@@ -53,10 +55,10 @@ export const handler = async (event) => {
 };
 
 ```
-After that run CDK deploy, this will deploy a Lambda function and API Gateway endpoint, the lambda function will take the asset key which is the folder path and generate a pre-signed URL. 
+After that run ```CDK deploy```, this will deploy a Lambda function and API Gateway endpoint, the lambda function will take the asset key which is the folder path and generate a pre-signed URL. 
 
-Step two: 
-Go under web/src/fetchurl and uncomment these lines of code:
+## Step two: 
+2.1 Go under web/src/fetchurl and uncomment these lines of code:
 
 ```javascript
 export async function loadAsset(assetType, assetKey, processAsset, retryCount = 0) {
@@ -96,15 +98,18 @@ You can use this function to replace the orginal local loaders from the code. No
 
 First asset: 
 
-go to flap.js and comment out 
+2.2 go to flap.js and comment out 
 
+```javascript
 `import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';`
-
+```
 and uncomment
 
+```javascript
 `import { loadAsset } from './fetchurl';`
+```
 
-comment out
+2.3 comment out
 
 ```javascript
 new GLTFLoader().load('assets/wing.glb', (gltf) => {
@@ -131,4 +136,3 @@ loadAsset('gltf', 'assets/wing.glb', (gltf) => {
 ```
 
 Second asset and third follow the same step in game.js and scene.js. In game.js it's a little different, because the game might load first than the actual assets, so we load the asset in the prepare() function and make sure it get load before the main game function executate() starts. More information please check out the docs: https://lastolivegames.github.io/becsy/guide/architecture/systems.html#defining-systems 
-
