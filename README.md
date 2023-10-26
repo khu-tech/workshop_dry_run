@@ -142,7 +142,7 @@ Upon successful execution, you should observe a success message: "High Score sto
 Test the GET API endpoint to retrieve player information, ensuring to substitute the endpoint URL and PlayerId accordingly.
 
 ```
-curl -X GET \ https://ejkjxfylk3.execute-api.us-east-1.amazonaws.com/dev/leaderboard/PlayerId123 \ -H "Content-Type: application/json"
+curl -X GET https://mc15bipyy2.execute-api.us-east-1.amazonaws.com/dev/leaderboard/PlayerId123 -H "Content-Type: application/json"
 
 ```
 A successful query will return player information in the following format: {"recordScore":0,"worldRecord":123,"ranking":1}.
