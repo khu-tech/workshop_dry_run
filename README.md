@@ -114,11 +114,13 @@ apiGateway.AddMethodIntegration(getHighScoreLambda.MethodIntegration(), "leaderb
 ### Step 5: Deploy with AWS CDK
 5.1  Execute the Deployment
 Deploy the constructed AWS infrastructure by executing the following command in your terminal:
-Under web, run 
+
+Under web folder, run 
 ```
 npm run build
 ```
-Under infra, run 
+
+Under infra folder, run 
 ```
 cdk deploy
 ```
