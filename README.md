@@ -4,7 +4,7 @@ Welcome to the step-by-step guide to building your game backend using AWS servic
 ## Prerequisites
 Ensure that you have the AWS CDK installed and configured on your machine. If not, refer to the AWS CDK Getting Started Guide.
 
-git checkout {placeholderURL}
+git checkout -b workshop_step_one
 
 ### Step 1: Clean Up CDK Resources
 Ensure a clean slate by removing any previously compiled CDK resources, using the following commands:
