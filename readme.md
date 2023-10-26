@@ -22,9 +22,9 @@ Make sure to checkout branch workshop_step_two from this github repository.
 Go to the root folder, and run 
 ```git checkout -b workshop_two``` to checkout the base code of workshop two. 
 
-Let's run the cdk deploy and then copy paste the output value of Cogino and replace the values under the amplifyconfigure.js 
+We will walk through the change in the code in order to implement Cognito, run the cdk deploy and then copy paste the output value of Cogino and replace the values under the amplifyconfigure.js 
 
-1.1 Make these changes before deploy 
+#### 1.1 Make these changes before deploy 
 Go to main.ts under infra/lib folder 
 Uncomment these three lines:
 
@@ -39,7 +39,7 @@ apiGateway.AddMethodIntegration(getHighScoreLambda.MethodIntegration(), "leaderb
 
 Notice that the difference with previous API Gateway integration is that it has put a API authorizer in the code, that make sure that API Gateway request passed this authorizer. 
 
-1.2 Also, go to cognito.ts under infra/components and uncomment this code 
+#### 1.2 Also, go to cognito.ts under infra/components and uncomment this code 
 
 ```json
 lambdaTriggers: {
@@ -51,7 +51,7 @@ This enables the Cognito user pool to trigger a Lambda function after user enter
 
 ### Step Two: 
 
-2.1 run ```cdk deploy ``` and update this Auth file below with the relevant output from your command line tool. 
+#### 2.1 run ```cdk deploy ``` and update this Auth file below with the relevant output from your command line tool. 
 
 ```
 Auth: {
@@ -69,7 +69,7 @@ Auth: {
 
 ```
 
-2.2 And then go to auth.js, uncomment this code:
+#### 2.2 And then go to auth.js, uncomment this code:
 
 ```javascript
 try {
@@ -91,7 +91,7 @@ try {
     }
 
 ```
-2.3 Also go under the signin function, and uncomment this code: 
+#### 2.3 Also go under the signin function, and uncomment this code: 
 
 ```javascript
 try {
@@ -111,7 +111,7 @@ try {
 
 Doing this will enable you to create the both the sign up and sign in page and have it connect to the to the Coginito user pool. 
 
-2.4 After you got the auth information through sign in, you could use it by calling auth.token everywhere without having to worry about the constructing the object. 
+#### 2.4 After you got the auth information through sign in, you could use it by calling auth.token everywhere without having to worry about the constructing the object. 
 
 Go to file game.js under web and uncomment these two lines: 
 
@@ -120,7 +120,7 @@ const session = await Auth.currentSession();
 this.ID_TOKEN = session.getIdToken().getJwtToken();
 ```
 
-2.5 The previou step will give you the token you need to authenticate API Gateway call, once you have this token, go to the same game.js file and uncomment: 
+#### 2.5 The previou step will give you the token you need to authenticate API Gateway call, once you have this token, go to the same game.js file and uncomment: 
 
 ```javascript
 getPlayerInfo() {
