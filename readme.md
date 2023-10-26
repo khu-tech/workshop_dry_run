@@ -51,7 +51,7 @@ This enables the Cognito user pool to trigger a Lambda function after user enter
 
 ### Step Two: 
 
-#### 2.1 run ```cdk deploy ``` and update this Auth file below with the relevant output from your command line tool. 
+#### 2.1 run ```cdk destroy MainStack``` ```cdk deploy ``` and update this Auth file below with the relevant output from your command line tool. 
 
 ```
 Auth: {
