@@ -20,7 +20,7 @@ Make sure to checkout branch workshop_step_two from this github repository.
 
 ### Step One: 
 Go to the root folder, and run 
-```git checkout -b workshop_two``` to checkout the base code of workshop two. 
+```git checkout -b workshopTwo origin/workshop_two``` to checkout the base code of workshop two. 
 
 We will walk through the change in the code in order to implement Cognito, run the cdk deploy and then copy paste the output value of Cogino and replace the values under the amplifyconfigure.js 
 
