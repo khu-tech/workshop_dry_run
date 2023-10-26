@@ -21,7 +21,7 @@ infra and web
 
 
 #### 3.1 Create Lambda Functions
-Navigate to main.ts within the lib directory. Uncomment the following lines to declare two Lambda functions:
+Under infra folder, navigate to main.ts within the lib directory. Uncomment the following lines to declare two Lambda functions:
 
 ```javascript
 const getHighScoreLambda = new LambdaStack(scope, "getPlayerInfoLambda", cdk.aws_lambda.Runtime.NODEJS_18_X, '../lambdaScripts/getPlayerInfo', 'handler', cdk.Duration.minutes(5), 512, 512, highScoreEnvs); const putHighScoreLambda = new LambdaStack(scope, "putPlayerRecordLambda", cdk.aws_lambda.Runtime.NODEJS_18_X, '../lambdaScripts/putPlayerRecord', 'handler', cdk.Duration.minutes(5), 512, 512, highScoreEnvs);
