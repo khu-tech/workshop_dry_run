@@ -19,7 +19,7 @@ The main logic behind our authentication experience is encapsulated within the a
 Make sure to checkout branch workshop_step_two from this github repository. 
 
 ### Step One: 
-run 
+Go to the root folder, and run 
 ```git checkout -b workshop_two``` to checkout the base code of workshop two. 
 
 Let's run the cdk deploy and then copy paste the output value of Cogino and replace the values under the amplifyconfigure.js 
