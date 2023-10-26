@@ -181,22 +181,22 @@ Use the handles of the simulated XR device to interact. Flapping up and down thr
 
 
 ## 3. Preparing for Production:
-Create a production build using:
+To a production build, run this under web folder
 
 ```
 npm run build
 
 ```
-This build is ready for upload to the specified S3 bucket.
+This build is ready for uploading to the specified S3 bucket.
 
 
 ## 4. Hosting the Game:
-Manual Upload to S3:
+Manual upload to S3:
 
 Refer to the screenshot below for guidance on how to manually upload to the S3 bucket.
 Using AWS CLI for Upload:
 
-Navigate to web/dist in your terminal.
+Navigate to __web/dist__ in your terminal.
 Run the following command to upload your game:
 
 ```
