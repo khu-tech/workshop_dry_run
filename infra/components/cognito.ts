@@ -22,8 +22,6 @@ export class CognitoStack extends cdk.NestedStack {
         this.identityPool.samlProviderArns = samlProviders;
         this.identityPool.openIdConnectProviderArns = openIdProviders;
         this.authRole = this.GenerateDefaultRoles(scope, id, this.identityPool);
-        //const postConfirmationLambda = this.createPreSignupLambda();
-        //this.userPool.addTrigger(cognito.UserPoolOperation.PRE_SIGN_UP, postConfirmationLambda);
     }
 
      CreateUserPool(scope: Construct, id: string, props?: cognito.UserPoolProps) {
