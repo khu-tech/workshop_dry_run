@@ -135,4 +135,4 @@ loadAsset('gltf', 'assets/wing.glb', (gltf) => {
 
 ```
 
-Second asset and third follow the same step in game.js and scene.js. In game.js it's a little different, because the game might load first than the actual assets, so we load the asset in the prepare() function and make sure it get load before the main game function executate() starts. More information please check out the docs: https://lastolivegames.github.io/becsy/guide/architecture/systems.html#defining-systems 
+Second and third asset could follow the same step in game.js and scene.js. In game.js it's a little different, because the game might load first than the actual assets, so we load the asset in the prepare() function and make sure it get load before the main game function executate() starts. More information please check out the docs: https://lastolivegames.github.io/becsy/guide/architecture/systems.html#defining-systems 
