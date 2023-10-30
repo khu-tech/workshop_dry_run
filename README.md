@@ -1,5 +1,7 @@
 # Workshop Part Three: hosting and loading your 3D assets from Cloud
 
+[Architecture diagram]
+
 In the previous parts of the workshop, you might notice that the assets is managed locally, and this part of workshop we will teach you how to render assets from S3 using S3 pre-signed URL, and why we are using S3? 
 
 __Supercharged Scalability__: Amazon S3 is like the trusty steed of cloud storage. Whether it's a handful of users or a whole carnival, S3 delivers without a hiccup. Local hosting, while charming, might stumble a bit with a big crowd.
