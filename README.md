@@ -91,9 +91,8 @@ export const handler = async (event, context) => {
 
 
 ### Step 4: Implement API using API Gateway
-After setting up the Lambda functions, proceed to establish the API Gateway, enabling the Web Client to invoke the API directly.
 
-Return to main.ts within the lib directory, and uncomment the API Gateway creation block. These lines instantiate two API endpoints:
+Return to main.ts within the lib directory, and uncomment the API Gateway creation block. These lines create two API endpoints:
 
 One for creating/updating player information.
 One for retrieving player information.
