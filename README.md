@@ -109,9 +109,9 @@ apiGateway.AddMethodIntegration(getHighScoreLambda.MethodIntegration(), "leaderb
 
 ```
 
+All the steps above are actually configuring the AWS services locally, but you haven't deployed yet, the step 5 is for you to deploy the services. 
 
-### Step 5: Deploy with AWS CDK
-5.1  Execute the Deployment
+### Step 5: Deploy with AWS CDK - 
 Deploy the constructed AWS infrastructure by executing the following command in your terminal:
 
 Under web folder, run 
