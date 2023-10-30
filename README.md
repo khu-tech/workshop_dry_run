@@ -1,6 +1,8 @@
 # Workshop Part One:
 Welcome to the step-by-step guide to building your game backend using AWS services like API Gateway, Lambda, and DynamoDB. Follow the steps below to set up the backend infrastructure efficiently.
 
+[Adding gif]
+
 ## Prerequisites
 Ensure that you have the AWS CDK installed and configured on your machine. If not, refer to the AWS CDK Getting Started Guide.
 
