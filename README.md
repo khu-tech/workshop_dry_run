@@ -180,8 +180,9 @@ This will start your game locally with the integrated backend in the cloud. Acce
 Install the WebXR plugin and open the developer tools. Select 'Inspect'.
 Use the handles of the simulated XR device to interact. Flapping up and down three times will initiate the game. In the 'Network' tab of the Chrome developer tools, you can verify if the API call was successful.
 
+# Part Three 
 
-## 3. Preparing for Production:
+## 1. Preparing for Production:
 To a production build, run this under web folder
 
 ```
@@ -191,7 +192,7 @@ npm run build
 This build is ready for uploading to the specified S3 bucket.
 
 
-## 4. Hosting the Game:
+## 2. Hosting the Game:
 Manual upload to S3:
 
 Refer to the screenshot below for guidance on how to manually upload to the S3 bucket.
@@ -205,4 +206,4 @@ aws s3 cp . s3://<bucket-root> --recursive
 
 ```
 
-After uploading, visit the provided CloudFront URL to see your game in action. Remember, using the 'Network' tab in your developer tools will help verify the correct API Gateway endpoint and detect any potential CORS issues.
+After uploading, visit the provided CloudFront URL (from your previous cdk deploy setup) to see your game in action. Remember, using the 'Network' tab in your developer tools will help verify the correct API Gateway endpoint and detect any potential CORS issues.
