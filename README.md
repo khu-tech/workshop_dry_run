@@ -1,4 +1,4 @@
-# Workshop Part Three: rendering your 3D assets from Cloud
+# Workshop Part Three: hosting and loading your 3D assets from Cloud
 
 In the previous parts of the workshop, you might notice that the assets is managed locally, and this part of workshop we will teach you how to render assets from S3 using S3 pre-signed URL, and why we are using S3? 
 
