@@ -63,7 +63,7 @@ export const handler = async (event, context) => {
 
 ```
 
-In getPlayerInfo.js, uncomment the code block. This code enables the Lambda function to retrieve player score information and ranking from DynamoDB.
+In getPlayerInfo.js, uncomment the code block. This code enables the Lambda function to retrieve player score information and ranking from DynamoDB. 
 
 ```
 export const handler = async (event, context) => {
@@ -134,7 +134,7 @@ Utilize cURL to test the POST API endpoint. Ensure to replace the endpoint URL a
 curl -X POST https://mc15bipyy2.execute-api.us-east-1.amazonaws.com/dev/leaderboard  -H "Content-Type: application/json" -d '{"playerId": "PlayerId123", "score": "123"}'
 
 ```
-Upon successful execution, you should observe a success message: "High Score stored." Validate the data insertion by navigating to the DynamoDB table via the AWS Console.
+Upon successful execution, you should observe a success message: "High Score stored." Validate the data insertion by navigating to the DynamoDB table via the AWS Console. [Insert gif] 
 
 
 #### 6.2 Retrieve Player Information
