@@ -176,7 +176,7 @@ In your terminal, run:
 npm run serve 
 
 ```
-This will start your game locally with the integrated backend. Access the game at localhost:8081.
+This will start your game locally with the integrated backend in the cloud. Access the game at localhost:8081.
 Install the WebXR plugin and open the developer tools. Select 'Inspect'.
 Use the handles of the simulated XR device to interact. Flapping up and down three times will initiate the game. In the 'Network' tab of the Chrome developer tools, you can verify if the API call was successful.
 
