@@ -7,7 +7,7 @@ Ensure that you have the AWS CDK installed and configured on your machine. If no
 git checkout -b workshop_one
 
 ### Step 1: Clean Up CDK Resources
-Ensure a clean slate by removing any previously compiled CDK resources, using the following commands:
+Ensure a clean slate by removing any previously compiled CDK resources, using the following commands under "infra" folder:
 ```
 rm -rf cdk.out 
 rm -rf dist
@@ -37,7 +37,7 @@ The actual Lambda function code is located within "../lambdaScripts/getPlayerInf
 
 
 #### 3.2 Implement Lambda Functions Code
-Navigate to the lambdaScripts directory.
+Navigate to the lambdaScripts directory under infra.
 
 In putPlayerRecord.js, uncomment the code block. This code enables the Lambda function to interact with DynamoDB, allowing it to create or update player information.
 
@@ -90,7 +90,7 @@ export const handler = async (event, context) => {
 ```
 
 
-### Step 4: Implement API Gateway
+### Step 4: Implement API using API Gateway
 After setting up the Lambda functions, proceed to establish the API Gateway, enabling the Web Client to invoke the API directly.
 
 Return to main.ts within the lib directory, and uncomment the API Gateway creation block. These lines instantiate two API endpoints:
